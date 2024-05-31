@@ -1,7 +1,7 @@
 # F1 Scraper Worker
 
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?logo=cloudflare&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![Cloudflare](https://img.shields.io/badge/Technology-Cloudflare-blue)
 
 The F1 Scheduled Worker is a Cloudflare Worker designed to run as a scheduled task, fetching information about Formula One races and updating the data. It serves an educational purpose and is non-profit, intended to demonstrate the usage of Cloudflare cron Workers.
 
