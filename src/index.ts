@@ -28,6 +28,5 @@ export default {
 const fetchF1Races = async (env: Env) => {
 	const response = await env.F1_SCRAPER.fetch(env.RACES_URL);
 	const races = await response.json();
-	console.log('F1 races: ', races);
 	return races;
 };
