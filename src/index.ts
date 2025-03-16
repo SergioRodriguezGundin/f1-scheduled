@@ -15,18 +15,42 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('f1-scheduled working!');
-	},
+import { getLatestRace, initializeRaces } from './races';
 
-	async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
-		ctx.waitUntil(fetchF1Races(env));
-	},
+export default {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    return new Response('f1-scheduled working!');
+  },
+
+  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(fetchF1Races(env));
+  },
 };
 
 const fetchF1Races = async (env: Env) => {
-	const response = await env.F1_SCRAPER.fetch(env.RACES_URL);
-	const races = await response.json();
-	return races;
+  const response = await env.F1_SCRAPER.fetch(env.RACES_URL);
+  const races = await response.json();
+  return races;
+};
+
+export const getLastRace = async (env: Env) => {
+  initializeRaces();
+  const lastRace = getLatestRace();
+  if (lastRace) {
+    // race result - Endpoint
+    // fastest laps - Endpoint
+    // pit stops summar - Endpoint
+    // qualifying results - Endpoint
+    // starting grid - Endpoint
+    // Check if sprint race?
+    // - sprint result - Endpoint
+    // - sprint qualifying - Endpoint
+    // - starting grid - Endpoint
+    // - Practice 1 - Endpoint
+    // No Sprint race?
+    // - Practice 1 - Endpoint
+    // - Practice 2 - Endpoint
+    // - Practice 3 - Endpoint
+  }
+  throw new Error('Yesterday was not a race day!');
 };
