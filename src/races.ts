@@ -85,7 +85,7 @@ function getRaceUrls(raceName: string, isSprintRace: boolean, env: Env): string[
   }
 
   for (const url of urls) {
-    endpoints.push(`${env.SCRAPER_URL}race/${raceName}/${url}`);
+    endpoints.push(`${env.SCRAPER_URL}/race/${raceName}/${url}`);
   }
 
 

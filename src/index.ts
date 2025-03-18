@@ -29,7 +29,7 @@ export default {
 };
 
 const fetchF1Races = async (env: Env) => {
-  const response = await env.F1_SCRAPER.fetch(env.RACES_URL); 
+  const response = await env.F1_SCRAPER.fetch(`${env.RACES_URL}/races`); 
   const races = await response.json();
   return races;
 };
@@ -39,7 +39,7 @@ export const getLastRace = async (env: Env): Promise<Response> => {
   const lastRace = getLatestRace();
   if (lastRace) {
     try {
-      await Promise.all(lastRace.urls.map(async (url: string) => {
+      await Promise.allSettled(lastRace.urls.map(async (url: string) => {
         const response = await env.F1_SCRAPER.fetch(url);
         console.log('🏎️ response: ', response);
         return response;
@@ -49,5 +49,5 @@ export const getLastRace = async (env: Env): Promise<Response> => {
       console.error('Error fetching latest race results:', error);
     }
   }
-  throw new Error('Yesterday was not a race day!');
+  throw new Error('We have not found any race yesterday');
 };
