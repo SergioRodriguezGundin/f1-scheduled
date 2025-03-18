@@ -111,3 +111,7 @@ service = "f1-scraper"
 # [[vectorize]]
 # binding = "MY_INDEX"
 # index_name = "my-index"
+
+# Enable logs
+[observability.logs]
+enabled = true

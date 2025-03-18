@@ -24,33 +24,30 @@ export default {
 
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     ctx.waitUntil(fetchF1Races(env));
+    ctx.waitUntil(getLastRace(env));
   },
 };
 
 const fetchF1Races = async (env: Env) => {
-  const response = await env.F1_SCRAPER.fetch(env.RACES_URL);
+  const response = await env.F1_SCRAPER.fetch(env.RACES_URL); 
   const races = await response.json();
   return races;
 };
 
-export const getLastRace = async (env: Env) => {
-  initializeRaces();
+export const getLastRace = async (env: Env): Promise<Response> => {
+  initializeRaces(env);
   const lastRace = getLatestRace();
   if (lastRace) {
-    // race result - Endpoint
-    // fastest laps - Endpoint
-    // pit stops summar - Endpoint
-    // qualifying results - Endpoint
-    // starting grid - Endpoint
-    // Check if sprint race?
-    // - sprint result - Endpoint
-    // - sprint qualifying - Endpoint
-    // - starting grid - Endpoint
-    // - Practice 1 - Endpoint
-    // No Sprint race?
-    // - Practice 1 - Endpoint
-    // - Practice 2 - Endpoint
-    // - Practice 3 - Endpoint
+    try {
+      await Promise.all(lastRace.urls.map(async (url: string) => {
+        const response = await env.F1_SCRAPER.fetch(url);
+        console.log('🏎️ response: ', response);
+        return response;
+      }));
+      return new Response('Last race results fetched successfully');
+    } catch (error) {
+      console.error('Error fetching latest race results:', error);
+    }
   }
   throw new Error('Yesterday was not a race day!');
 };

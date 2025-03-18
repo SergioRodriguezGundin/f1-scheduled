@@ -1,76 +1,57 @@
-type Race = {
+const raceUrls = [
+  'fastest-laps',
+  'pit-stops',
+  'qualifying',
+  'starting-grid',
+  'practice/1',
+  'practice/2',
+  'practice/3'
+]
+
+const sprintRaceUrls = [
+  'sprint-grid',
+  'sprint-qualifying',
+  'sprint-results',
+]
+
+export type Race = {
   name: string;
   date: string;
+  isSprintRace: boolean;
+  urls: string[];
 };
 
 export const races = new Map<string, Race>();
 
-export const initializeRaces = () => {
+/**
+ * Initialize the races
+ */
+export const initializeRaces = (env: Env) => {
   const raceData = [
-    {
-      dateRange: '14-16Mar',
-      country: 'Australia',
-      name: 'FORMULA 1 LOUIS VUITTON AUSTRALIAN GRAND PRIX 2025',
-      circuit: 'Melbourne circuit',
-    },
-    { dateRange: '21-23Mar', country: 'China', name: 'FORMULA 1 HEINEKEN CHINESE GRAND PRIX 2025', circuit: 'Shanghai circuit' },
-    { dateRange: '04-06Apr', country: 'Japan', name: 'FORMULA 1 LENOVO JAPANESE GRAND PRIX 2025', circuit: 'Suzuka circuit' },
-    { dateRange: '11-13Apr', country: 'Bahrain', name: 'FORMULA 1 GULF AIR BAHRAIN GRAND PRIX 2025', circuit: 'Sakhir circuit' },
-    { dateRange: '18-20Apr', country: 'Saudi Arabia', name: 'FORMULA 1 STC SAUDI ARABIAN GRAND PRIX 2025', circuit: 'Jeddah circuit' },
-    { dateRange: '02-04May', country: 'Miami', name: 'FORMULA 1 CRYPTO.COM MIAMI GRAND PRIX 2025', circuit: 'Miami circuit' },
-    {
-      dateRange: '16-18May',
-      country: 'Emilia-Romagna',
-      name: "FORMULA 1 AWS GRAN PREMIO DEL MADE IN ITALY E DELL'EMILIA-ROMAGNA 2025",
-      circuit: 'Imola circuit',
-    },
-    { dateRange: '23-25May', country: 'Monaco', name: 'FORMULA 1 TAG HEUER GRAND PRIX DE MONACO 2025', circuit: 'Monaco circuit' },
-    { dateRange: '30-01May-Jun', country: 'Spain', name: 'FORMULA 1 ARAMCO GRAN PREMIO DE ESPAÑA 2025', circuit: 'Barcelona circuit' },
-    { dateRange: '13-15Jun', country: 'Canada', name: 'FORMULA 1 PIRELLI GRAND PRIX DU CANADA 2025', circuit: 'Montréal circuit' },
-    { dateRange: '27-29Jun', country: 'Austria', name: 'FORMULA 1 MSC CRUISES AUSTRIAN GRAND PRIX 2025', circuit: 'Spielberg circuit' },
-    {
-      dateRange: '04-06Jul',
-      country: 'Great Britain',
-      name: 'FORMULA 1 QATAR AIRWAYS BRITISH GRAND PRIX 2025',
-      circuit: 'Silverstone circuit',
-    },
-    {
-      dateRange: '25-27Jul',
-      country: 'Belgium',
-      name: 'FORMULA 1 MOËT & CHANDON BELGIAN GRAND PRIX 2025',
-      circuit: 'Spa-Francorchamps circuit',
-    },
-    { dateRange: '01-03Aug', country: 'Hungary', name: 'FORMULA 1 LENOVO HUNGARIAN GRAND PRIX 2025', circuit: 'Budapest circuit' },
-    { dateRange: '29-31Aug', country: 'Netherlands', name: 'FORMULA 1 HEINEKEN DUTCH GRAND PRIX 2025', circuit: 'Zandvoort circuit' },
-    { dateRange: '05-07Sep', country: 'Italy', name: "FORMULA 1 PIRELLI GRAN PREMIO D'ITALIA 2025", circuit: 'Monza circuit' },
-    { dateRange: '19-21Sep', country: 'Azerbaijan', name: 'FORMULA 1 QATAR AIRWAYS AZERBAIJAN GRAND PRIX 2025', circuit: 'Baku circuit' },
-    {
-      dateRange: '03-05Oct',
-      country: 'Singapore',
-      name: 'FORMULA 1 SINGAPORE AIRLINES SINGAPORE GRAND PRIX 2025',
-      circuit: 'Marina Bay circuit',
-    },
-    {
-      dateRange: '17-19Oct',
-      country: 'United States',
-      name: 'FORMULA 1 MSC CRUISES UNITED STATES GRAND PRIX 2025',
-      circuit: 'Austin circuit',
-    },
-    { dateRange: '24-26Oct', country: 'Mexico', name: 'FORMULA 1 GRAN PREMIO DE LA CIUDAD DE MÉXICO 2025', circuit: 'Mexico City circuit' },
-    {
-      dateRange: '07-09Nov',
-      country: 'Brazil',
-      name: 'FORMULA 1 MSC CRUISES GRANDE PRÊMIO DE SÃO PAULO 2025',
-      circuit: 'São Paulo circuit',
-    },
-    { dateRange: '20-22Nov', country: 'Las Vegas', name: 'FORMULA 1 HEINEKEN LAS VEGAS GRAND PRIX 2025', circuit: 'Las Vegas circuit' },
-    { dateRange: '28-30Nov', country: 'Qatar', name: 'FORMULA 1 QATAR AIRWAYS QATAR GRAND PRIX 2025', circuit: 'Lusail circuit' },
-    {
-      dateRange: '05-07Dec',
-      country: 'Abu Dhabi',
-      name: 'FORMULA 1 ETIHAD AIRWAYS ABU DHABI GRAND PRIX 2025',
-      circuit: 'Yas Island circuit',
-    },
+    { dateRange: '14-16Mar', name: 'australia', isSprintRace: false},
+    { dateRange: '21-23Mar', name: 'china', isSprintRace: true},
+    { dateRange: '04-06Apr', name: 'japan', isSprintRace: false},
+    { dateRange: '11-13Apr', name: 'bahrain', isSprintRace: false},
+    { dateRange: '18-20Apr', name: 'saudi-arabia', isSprintRace: false},
+    { dateRange: '02-04May', name: 'miami', isSprintRace: true},
+    { dateRange: '16-18May', name: 'italy', isSprintRace: false},
+    { dateRange: '23-25May', name: 'monaco', isSprintRace: false},
+    { dateRange: '30-01May-Jun', name: 'spain', isSprintRace: false},
+    { dateRange: '13-15Jun', name: 'canada', isSprintRace: false},
+    { dateRange: '27-29Jun', name: 'austria', isSprintRace: false},
+    { dateRange: '04-06Jul', name: 'great-britain', isSprintRace: false},
+    { dateRange: '25-27Jul', name: 'belgium', isSprintRace: true},
+    { dateRange: '01-03Aug', name: 'hungary', isSprintRace: false},
+    { dateRange: '29-31Aug', name: 'netherlands', isSprintRace: false},
+    { dateRange: '05-07Sep', name: 'monza', isSprintRace: false},
+    { dateRange: '19-21Sep', name: 'azerbaijan', isSprintRace: false},
+    { dateRange: '03-05Oct', name: 'singapore', isSprintRace: false},
+    { dateRange: '17-19Oct', name: 'united-states', isSprintRace: true},
+    { dateRange: '24-26Oct', name: 'mexico', isSprintRace: false},
+    { dateRange: '07-09Nov', name: 'brazil', isSprintRace: true},
+    { dateRange: '20-22Nov', name: 'las-vegas', isSprintRace: false},
+    { dateRange: '28-30Nov', name: 'qatar', isSprintRace: true},
+    { dateRange: '05-07Dec', name: 'abu-dhabi', isSprintRace: false},
   ];
 
   raceData.forEach((race) => {
@@ -80,9 +61,36 @@ export const initializeRaces = () => {
     races.set(timestamp, {
       name: race.name,
       date: raceDate.toISOString().split('T')[0], // Formato YYYY-MM-DD
+      urls: getRaceUrls(race.name, race.isSprintRace, env),
+      isSprintRace: race.isSprintRace,
     });
   });
 };
+
+/**
+ * Get the URLs for the race
+ * @param raceName - The name of the race
+ * @param raceNumber - The number of the race
+ * @param isSprintRace - Whether the race is a sprint race
+ * @returns The URLs for the race
+ */
+function getRaceUrls(raceName: string, isSprintRace: boolean, env: Env): string[] {
+  let endpoints = [];
+  let urls = raceUrls;
+
+  endpoints.push(`${env.SCRAPER_URL}/race/${raceName}`);
+  
+  if (isSprintRace) {
+    urls = [...urls, ...sprintRaceUrls];
+  }
+
+  for (const url of urls) {
+    endpoints.push(`${env.SCRAPER_URL}race/${raceName}/${url}`);
+  }
+
+
+  return endpoints;
+}
 
 /**
  * Get the Sunday date (last day) of the weekend of the race
